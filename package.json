@@ -1,0 +1,11 @@
+{
+  "name": "hello-wxo-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}
