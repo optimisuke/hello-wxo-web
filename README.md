@@ -64,6 +64,36 @@ ACTION=disable WXO_API_KEY=$ORCHESTRATE_APIKEY \
 1. `index.html` をブラウザで開く
 2. チャットが表示されれば OK
 
+### index.html のコア（抜粋）
+
+`config.js` を読み込み、JWT なしでチャットを起動します。
+
+```html
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>社内ポータル</title>
+    <script src="./config.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.wxOConfiguration = {
+        ...window.wxoPortalConfig,
+        showLauncher: true,
+        layout: { form: "float", width: "380px", height: "560px" },
+      };
+      const script = document.createElement("script");
+      script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
+      script.addEventListener("load", () => wxoLoader.init());
+      document.head.appendChild(script);
+    </script>
+  </body>
+</html>
+```
+
 ## セキュリティ有効化
 
 セキュリティを有効化することで、特定のユーザーにのみ利用してもらうことが可能です。
@@ -134,6 +164,62 @@ curl -sS -X POST \
 - `index_secure.html`: セキュリティ有効化向け。`/token` から JWT を取得し、`authTokenNeeded` で更新
 - `server.js`: JWT 発行サーバー。クライアント秘密鍵で署名し、IBM 公開鍵で `user_payload` を暗号化
 - `config.js`: `orchestrationID`/`crn`/`agentId` などの設定値を分離
+
+#### index_secure.html（抜粋）
+
+JWT を取得して `authTokenNeeded` で差し込みます。
+
+```html
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>社内ポータル</title>
+    <script src="./config.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const TOKEN_ENDPOINT = "http://localhost:3003/token";
+      async function fetchAuthToken() {
+        const res = await fetch(`${TOKEN_ENDPOINT}?user_id=anon`);
+        return res.text();
+      }
+      function attachAuthHandlers(instance) {
+        instance.on("authTokenNeeded", async (event) => {
+          event.authToken = await fetchAuthToken();
+        });
+      }
+      window.wxOConfiguration = { ...window.wxoPortalConfig };
+      window.wxOConfiguration.onChatLoad = attachAuthHandlers;
+      window.wxOConfiguration.token = await fetchAuthToken();
+    </script>
+  </body>
+</html>
+```
+
+#### server.js（抜粋）
+
+```js
+const encrypted = crypto.publicEncrypt(
+  {
+    key: IBM_PUBLIC_KEY,
+    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+    oaepHash: "sha256",
+  },
+  Buffer.from(JSON.stringify(userPayload), "utf8")
+);
+
+const tokenPayload = {
+  sub: userId,
+  user_payload: encrypted.toString("base64"),
+};
+const token = jwt.sign(tokenPayload, PRIVATE_KEY, {
+  algorithm: "RS256",
+  expiresIn: "1h",
+});
+```
 
 ### 起動
 
