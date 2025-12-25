@@ -1,0 +1,11 @@
+window.wxoPortalConfig = {
+  orchestrationID:
+    "xxx",
+  hostURL: "https://jp-tok.watson-orchestrate.cloud.ibm.com",
+  rootElementID: "root",
+  deploymentPlatform: "ibmcloud",
+  crn: "crn:v1:bluemix:public:watsonx-orchestrate:jp-tok:a/yyy",
+  chatOptions: {
+    agentId: "zzz",
+  },
+};
