@@ -2,6 +2,8 @@
 
 watsonx Orchestrate Embedded Chat を最小構成で動かすためのサンプルです。
 
+![](/images/wxo-web.gif)
+
 ## セキュリティ無効化（最小）
 
 Embedded chat はデフォルトでセキュリティが有効ですが未設定のため、そのままだと動きません。
@@ -14,7 +16,7 @@ watsonx Orchestrate の画面から`<script>`タグをコピーします。
 ![](/images/2025-12-26-00-23-50.png)
 
 視覚情報をダウンロードします。ここに`ORCHESTRATE_APIKEY`等のシークレットが含まれます。
-![](images/2025-12-26-00-27-28.png)
+![](/images/2025-12-26-00-27-28.png)
 
 ### 必要な情報
 
@@ -69,7 +71,7 @@ ACTION=disable WXO_API_KEY=$ORCHESTRATE_APIKEY \
 `config.js` を読み込み、JWT なしでチャットを起動します。
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
@@ -170,7 +172,7 @@ curl -sS -X POST \
 JWT を取得して `authTokenNeeded` で差し込みます。
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
