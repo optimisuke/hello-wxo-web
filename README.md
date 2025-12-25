@@ -4,10 +4,9 @@ watsonx Orchestrate Embedded Chat を最小構成で動かすためのサンプ�
 
 ![](/images/wxo-web.gif)
 
-## セキュリティ無効化（最小）
+詳細は以下の公式サイトを参照ください。
 
-Embedded chat はデフォルトでセキュリティが有効ですが未設定のため、そのままだと動きません。
-まずは匿名アクセスで動かすためにセキュリティを無効化します。
+https://developer.watson-orchestrate.ibm.com/agents/integrate_agents
 
 ### 準備
 
@@ -15,8 +14,13 @@ watsonx Orchestrate の画面から`<script>`タグをコピーします。
 
 ![](/images/2025-12-26-00-23-50.png)
 
-視覚情報をダウンロードします。ここに`ORCHESTRATE_APIKEY`等のシークレットが含まれます。
+資格情報をダウンロードします。ここに`ORCHESTRATE_APIKEY`等のシークレットが含まれます。
 ![](/images/2025-12-26-00-27-28.png)
+
+## セキュリティ無効化（最小）
+
+Embedded chat はデフォルトでセキュリティが有効ですが未設定のため、そのままだと動きません。
+まずは匿名アクセスで動かすためにセキュリティを無効化します。
 
 ### 必要な情報
 
